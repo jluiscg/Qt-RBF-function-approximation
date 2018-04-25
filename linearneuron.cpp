@@ -1,6 +1,7 @@
 /**
- *Authors: José Luis Cortés Gutiérrez 
- *		   Carlos Andrés Hernández Blanco
+ *Authors:
+ *  José Luis Cortés Gutiérrez 
+ *  Carlos Andrés Hernández Blanco
  *Linear neuron class' implementation
  *Date: November 23, 2017
 */
