@@ -1,6 +1,7 @@
 /**
- *Authors: José Luis Cortés Gutiérrez 
- *		   Carlos Andrés Hernández Blanco
+ *Authors:
+ *  José Luis Cortés Gutiérrez 
+ *  Carlos Andrés Hernández Blanco
  *Implementation  for all functions needed in mainwindow
  *Date: November 23, 2017
 */
