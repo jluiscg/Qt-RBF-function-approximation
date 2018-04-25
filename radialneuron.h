@@ -1,6 +1,7 @@
 /**
- *Authors: José Luis Cortés Gutiérrez 
- *		   Carlos Andrés Hernández Blanco
+ *Authors:
+ *  José Luis Cortés Gutiérrez 
+ *  Carlos Andrés Hernández Blanco
  *Radial neuron class' Definition
  *Date: November 20, 2017
 */
