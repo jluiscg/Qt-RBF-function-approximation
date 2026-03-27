@@ -2,6 +2,12 @@
 
 Interactive Qt desktop application for 1D function approximation with a Radial Basis Function (RBF) neural network. The app is focused on learning and visualization: you can choose a target function, initialize the RBF layer, train, and inspect charts for the function, Gaussian responses, and error evolution.
 
+<p align="center">
+	<img src="Screenshots/recording.gif" alt="Training Demo" width="70%"  />
+<p>
+If the animation is not shown by your Markdown renderer, open [Screenshots/recording.gif](Screenshots/recordi.gif).
+
+
 ## Features
 
 - Function approximation with an RBF network (Gaussian hidden neurons + linear output neuron)
