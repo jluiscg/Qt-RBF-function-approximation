@@ -5,7 +5,8 @@ Interactive Qt desktop application for 1D function approximation with a Radial B
 <p align="center">
 	<img src="Screenshots/recording.gif" alt="Training Demo" width="70%"  />
 </p>
-If the animation is not shown by your Markdown renderer, open [Screenshots/recording.gif](Screenshots/recording.gif).
+
+If the animation is not shown by your Markdown renderer, open [training GIF](Screenshots/recording.gif).
 
 ## Features
 
