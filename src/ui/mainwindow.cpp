@@ -6,6 +6,7 @@
 */
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QStringList>
 #define STEP_POINT 0.07
 #define INPUT_RANGE 10
 #define OP_SIN 1
@@ -25,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     chart->legend()->hide();
     chart->addSeries(series);
     chart->createDefaultAxes();
-    chart->setTitle("Chart");
+    chart->setTitle("Target Function");
     chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
     gridLayout = new QGridLayout(ui->widget);
@@ -35,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     chart_gaussians->legend()->hide();
     chart_gaussians->addSeries(new QLineSeries());
     chart_gaussians->createDefaultAxes();
-    chart_gaussians->setTitle("Gaussians");
+    chart_gaussians->setTitle("Gaussian Responses");
     chartView_gaussians = new QChartView(chart_gaussians);
     chartView_gaussians->setRenderHint(QPainter::Antialiasing);
     gridLayout_gaussians = new QGridLayout(ui->widgetGaussians);
@@ -46,11 +47,15 @@ MainWindow::MainWindow(QWidget *parent) :
     chart_error->legend()->hide();
     chart_error->addSeries(series_error);
     chart_error->createDefaultAxes();
-    chart_error->setTitle("Error");
+    chart_error->setTitle("Training Error");
     chartView_error = new QChartView(chart_error);
     chartView_error->setRenderHint(QPainter::Antialiasing);
     gridLayout_error = new QGridLayout(ui->widget_error);
     gridLayout_error->addWidget(chartView_error,0,0);
+
+    ui->lblCurrentEpoch->setText("0 / 0");
+    ui->lblFound->setText("Select a function, click Initialize, then Train.");
+    statusBar()->showMessage("Ready");
 }
 
 MainWindow::~MainWindow()
@@ -69,41 +74,70 @@ void MainWindow::Restart()
     inputs.clear();
     radial_neurons.clear();
     series_error->clear();
+    ui->lblCurrentEpoch->setText("0 / 0");
+    ui->lblFound->setText("Select a function, click Initialize, then Train.");
 }
 
 void MainWindow::on_btnTrain_clicked()
 {
+    QStringList adjustedFields;
+
     //learning rate
-    learning_rate=ui->lineLearning->text().toDouble();
-    if(learning_rate==0){
+    bool learningRateOk = false;
+    learning_rate=ui->lineLearning->text().toDouble(&learningRateOk);
+    if(!learningRateOk || learning_rate<=0){
         learning_rate=1;
         ui->lineLearning->setText("1.0");
+        adjustedFields.append("learning rate");
     }
     //maximum epochs
-    max_epochs=ui->lineEpochs->text().toInt();
-    if(max_epochs==0){
+    bool maxEpochsOk = false;
+    max_epochs=ui->lineEpochs->text().toInt(&maxEpochsOk);
+    if(!maxEpochsOk || max_epochs<=0){
         max_epochs=100;
         ui->lineEpochs->setText("100");
+        adjustedFields.append("max epochs");
     }
     //desired error
-    desired_error=ui->lineDesiredError->text().toDouble();
-    if(desired_error==0){
+    bool desiredErrorOk = false;
+    desired_error=ui->lineDesiredError->text().toDouble(&desiredErrorOk);
+    if(!desiredErrorOk || desired_error<=0){
         desired_error=0.0001;
         ui->lineDesiredError->setText("0.0001");
+        adjustedFields.append("desired error");
     }
     //number of Gaussian neurons
-    k=ui->lineK->text().toInt();
-    if(k==0){
+    bool radialNeuronsOk = false;
+    k=ui->lineK->text().toInt(&radialNeuronsOk);
+    if(!radialNeuronsOk || k<=0){
         k=5;
         ui->lineK->setText("5");
+        adjustedFields.append("radial neurons (k)");
     }
+
+    if(!adjustedFields.isEmpty()){
+        QString message =
+            "Adjusted invalid values: " + adjustedFields.join(", ") + ".";
+        ui->lblFound->setText(message);
+        statusBar()->showMessage(message, 7000);
+    }
+
     //initialize whether a solution was found
     done = false;
     //initialize mean squared error
     mse=1;
     //initialize current epoch
     current_epoch=1;
+    ui->lblFound->setText("Training in progress...");
+    statusBar()->showMessage("Training...");
     Train();
+
+    QString finalMessage =
+        QString("Training complete. Epoch: %1, MSE: %2")
+            .arg(current_epoch - 1)
+            .arg(mse, 0, 'g', 6);
+    ui->lblFound->setText(finalMessage);
+    statusBar()->showMessage(finalMessage, 8000);
 }
 
 void MainWindow::Train()
@@ -241,7 +275,8 @@ void MainWindow::Train()
         chart_error->addSeries(series_error);
         chart_error->createDefaultAxes();
         //-----------
-        ui->lblCurrentEpoch->setText(QString::number(current_epoch));
+        ui->lblCurrentEpoch->setText(
+            QString("%1 / %2").arg(current_epoch).arg(max_epochs));
         chart_gaussians->removeAllSeries();
         QVector<QLineSeries *> seriesAux;
         for(int i=0;i<radial_layer_output.size();i++)
@@ -310,8 +345,11 @@ void MainWindow::UpdateGaussianChart()
 void MainWindow::on_btnInitialize_clicked()
 {
     //check it is not empty
-    if(inputs.isEmpty())
+    if(inputs.isEmpty()) {
+        ui->lblFound->setText("Select a function before initialization.");
+        statusBar()->showMessage("Initialization blocked: no function selected.", 7000);
         return;
+    }
     //reset neurons
     radial_neurons.clear();
     //disable k input field
@@ -358,6 +396,9 @@ void MainWindow::on_btnInitialize_clicked()
     for(int i=0;i<numSeries;i++)
         chart_gaussians->addSeries(seriesAux.at(i));
     chart_gaussians->createDefaultAxes();
+
+    ui->lblFound->setText("Initialization complete. Ready to train.");
+    statusBar()->showMessage("Neurons initialized.", 5000);
 }
 void MainWindow::ProcessNewFunction(int option)
 {
@@ -382,15 +423,15 @@ void MainWindow::ProcessNewFunction(int option)
             break;
         case OP_FUNCTION_3:
             y=((x-2)*(2*x+1))/(1+qPow(x,2));
-            chart_name="Chart ((x-2)(2x+1))/(1x^2)";
+            chart_name="Target: ((x-2)(2x+1))/(1+x^2)";
             break;
         case OP_FUNCTION_4:
             y=2*qSin(x)+qCos(3*x);
-            chart_name="Chart 2sin(x)+cos(3x)";
+            chart_name="Target: 2sin(x)+cos(3x)";
             break;
         case OP_FUNCTION_5:
             y=qSin(2*x)+qLn(qPow(x,2));
-            chart_name="Chart sin(2x) + ln(x^2)";
+            chart_name="Target: sin(2x)+ln(x^2)";
             break;
         }
         series->append(x,y);
@@ -407,11 +448,18 @@ void MainWindow::ProcessNewFunction(int option)
     chart->legend()->hide();
     chart->addSeries(series);
     chart->createDefaultAxes();
+    if(option == OP_SIN)
+        chart_name = "Target: sin(x)";
+    else if(option == OP_COS)
+        chart_name = "Target: cos(x)";
     chart->setTitle(chart_name);
     chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
     gridLayout->addWidget(chartView,0,0);
     qApp->processEvents();
+
+    ui->lblFound->setText("Function loaded. Click Initialize.");
+    statusBar()->showMessage("Function ready for initialization.", 5000);
 }
 void MainWindow::on_rbSine_clicked()
 {
