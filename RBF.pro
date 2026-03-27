@@ -25,15 +25,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    radialneuron.cpp \
-    linearneuron.cpp
+        src/app/main.cpp \
+        src/ui/mainwindow.cpp \
+        src/neurons/radialneuron.cpp \
+        src/neurons/linearneuron.cpp
 
 HEADERS += \
-        mainwindow.h \
-    radialneuron.h \
-    linearneuron.h
+        src/ui/mainwindow.h \
+        src/neurons/radialneuron.h \
+        src/neurons/linearneuron.h
 
 FORMS += \
-        mainwindow.ui
+        src/ui/mainwindow.ui
+
+INCLUDEPATH += \
+        src/ui \
+        src/neurons
