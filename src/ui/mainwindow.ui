@@ -217,6 +217,26 @@
             <height>36</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    border-radius: 10px;
+    border: 1px solid #5f6b7a;
+    background-color: #2d3440;
+    color: #f3f6fb;
+    padding: 6px 14px;
+}
+QPushButton:hover {
+    background-color: #3a4453;
+}
+QPushButton:pressed {
+    background-color: #232933;
+}
+QPushButton:disabled {
+    background-color: #1f242d;
+    color: #8893a3;
+    border-color: #3a4453;
+}</string>
+          </property>
           <property name="text">
            <string>Initialize</string>
           </property>
@@ -229,6 +249,27 @@
             <width>120</width>
             <height>36</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    border-radius: 10px;
+    border: 1px solid #2a68d6;
+    background-color: #3c83f6;
+    color: #ffffff;
+    padding: 6px 14px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background-color: #5a97fb;
+}
+QPushButton:pressed {
+    background-color: #2f74df;
+}
+QPushButton:disabled {
+    background-color: #556279;
+    color: #d4d9e2;
+    border-color: #4a576f;
+}</string>
           </property>
           <property name="text">
            <string>Train</string>
