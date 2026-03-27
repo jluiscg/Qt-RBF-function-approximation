@@ -40,19 +40,19 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_bttnEntrenar_clicked();
+    void on_btnTrain_clicked();
 
-    void on_rbSeno_clicked();
+    void on_rbSine_clicked();
 
-    void on_rbCoseno_clicked();
+    void on_rbCosine_clicked();
 
-    void on_bttnInicializar_clicked();
+    void on_btnInitialize_clicked();
 
-    void on_rbFuncion3_clicked();
+    void on_rbFunction3_clicked();
 
-    void on_rbFuncion4_clicked();
+    void on_rbFunction4_clicked();
 
-    void on_rbFuncion5_clicked();
+    void on_rbFunction5_clicked();
 
 private:
     Ui::MainWindow *ui;

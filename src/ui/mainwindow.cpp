@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     chart->legend()->hide();
     chart->addSeries(series);
     chart->createDefaultAxes();
-    chart->setTitle("Gráfica");
+    chart->setTitle("Chart");
     chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
     gridLayout = new QGridLayout(ui->widget);
@@ -35,10 +35,10 @@ MainWindow::MainWindow(QWidget *parent) :
     chart_gaussians->legend()->hide();
     chart_gaussians->addSeries(new QLineSeries());
     chart_gaussians->createDefaultAxes();
-    chart_gaussians->setTitle("Gaussianas");
+    chart_gaussians->setTitle("Gaussians");
     chartView_gaussians = new QChartView(chart_gaussians);
     chartView_gaussians->setRenderHint(QPainter::Antialiasing);
-    gridLayout_gaussians = new QGridLayout(ui->widget_gaussianas);
+    gridLayout_gaussians = new QGridLayout(ui->widgetGaussians);
     gridLayout_gaussians->addWidget(chartView_gaussians,0,0);
     //error
     series_error = new QLineSeries();
@@ -71,7 +71,7 @@ void MainWindow::Restart()
     series_error->clear();
 }
 
-void MainWindow::on_bttnEntrenar_clicked()
+void MainWindow::on_btnTrain_clicked()
 {
     //learning rate
     learning_rate=ui->lineLearning->text().toDouble();
@@ -79,29 +79,29 @@ void MainWindow::on_bttnEntrenar_clicked()
         learning_rate=1;
         ui->lineLearning->setText("1.0");
     }
-    //epocas maximas
-    max_epochs=ui->lineEpocas->text().toInt();
+    //maximum epochs
+    max_epochs=ui->lineEpochs->text().toInt();
     if(max_epochs==0){
         max_epochs=100;
-        ui->lineEpocas->setText("100");
+        ui->lineEpochs->setText("100");
     }
-    //error deseado
-    desired_error=ui->lineErrorDeseado->text().toDouble();
+    //desired error
+    desired_error=ui->lineDesiredError->text().toDouble();
     if(desired_error==0){
         desired_error=0.0001;
-        ui->lineErrorDeseado->setText("0.0001");
+        ui->lineDesiredError->setText("0.0001");
     }
-    //num de neuronas gaussianas
+    //number of Gaussian neurons
     k=ui->lineK->text().toInt();
     if(k==0){
         k=5;
         ui->lineK->setText("5");
     }
-    //inicializa si se encontró solución
+    //initialize whether a solution was found
     done = false;
-    //inicializa error cuadrático
+    //initialize mean squared error
     mse=1;
-    //inicializa la época actual
+    //initialize current epoch
     current_epoch=1;
     Train();
 }
@@ -218,8 +218,8 @@ void MainWindow::Train()
             //calculate the final output given by the linear combination of
             //weights * radial_output plus the bias
             output = 0;
-            for(int j=0;j<linear_neuron.pesos_.size();j++){
-                output += linear_neuron.pesos_.at(j) * radial_layer_output.at(j);
+            for(int j=0;j<linear_neuron.weights_.size();j++){
+                output += linear_neuron.weights_.at(j) * radial_layer_output.at(j);
             }
             output += linear_neuron.bias_;
             Z.append(output);
@@ -227,10 +227,10 @@ void MainWindow::Train()
             error = desired_outputs.at(i) - Z.at(i);  //pattern error;
             mse+=error;
             //update weights
-            for(int j=0;j<linear_neuron.pesos_.size();j++){
+            for(int j=0;j<linear_neuron.weights_.size();j++){
                 new_weight = learning_rate * error * radial_layer_output.at(j);
-                new_weight = linear_neuron.pesos_.at(j) + new_weight;
-                linear_neuron.pesos_.replace(j, new_weight);
+                new_weight = linear_neuron.weights_.at(j) + new_weight;
+                linear_neuron.weights_.replace(j, new_weight);
             }
         }
         mse=mse*mse/2;
@@ -241,7 +241,7 @@ void MainWindow::Train()
         chart_error->addSeries(series_error);
         chart_error->createDefaultAxes();
         //-----------
-        ui->lblNumEpoca->setText(QString::number(current_epoch));
+        ui->lblCurrentEpoch->setText(QString::number(current_epoch));
         chart_gaussians->removeAllSeries();
         QVector<QLineSeries *> seriesAux;
         for(int i=0;i<radial_layer_output.size();i++)
@@ -274,10 +274,10 @@ void MainWindow::Delay()
 }
 void MainWindow::UpdateErrorChart()
 {
-    gridLayout_error->removeWidget(chartView_error);//eliminamos el chartview del layout
-    chart_error->removeSeries(series_error);//se remueve la serie para evitar que el destructor del chart la elimine
-    delete chart_error;//elimina chart aunque con eliminar el chartview tambien se elimina este
-    delete chartView_error;//elimina chartview
+    gridLayout_error->removeWidget(chartView_error); // remove chart view from the layout
+    chart_error->removeSeries(series_error); // keep series alive when deleting chart
+    delete chart_error;
+    delete chartView_error;
     chart_error = new QChart();
     chart_error->legend()->hide();
     chart_error->addSeries(series_error);
@@ -289,34 +289,34 @@ void MainWindow::UpdateErrorChart()
 }
 void MainWindow::UpdateGaussianChart()
 {
-    gridLayout_gaussians->removeWidget(chartView_gaussians);//eliminamos el chartview del layout
+    gridLayout_gaussians->removeWidget(chartView_gaussians); // remove chart view from the layout
     QList<QAbstractSeries*> tmp = chart_gaussians->series();
     for(int i=0;i<tmp.size();i++){
         chart_gaussians->removeSeries(tmp.at(i));
     }
-    delete chart_gaussians;//elimina chart aunque con eliminar el chartview tambien se elimina este
-    delete chartView_gaussians;//elimina chartview
+    delete chart_gaussians;
+    delete chartView_gaussians;
     chart_gaussians = new QChart();
     chart_gaussians->legend()->hide();
     for(int i=0;i<tmp.size();i++){
         chart_gaussians->addSeries(tmp.at(i));
     }
     chart_gaussians->createDefaultAxes();
-    chart_gaussians->setTitle("Gaussianas");
+    chart_gaussians->setTitle("Gaussians");
     chartView_gaussians = new QChartView(chart_gaussians);
     chartView_gaussians->setRenderHint(QPainter::Antialiasing);
     gridLayout_gaussians->addWidget(chartView_gaussians,0,0);
 }
-void MainWindow::on_bttnInicializar_clicked()
+void MainWindow::on_btnInitialize_clicked()
 {
-    //ve que no esté vacío
+    //check it is not empty
     if(inputs.isEmpty())
         return;
-    //reinicia las neuronas
+    //reset neurons
     radial_neurons.clear();
-    //desactiva el espacio para mover k
+    //disable k input field
     ui->lineK->setEnabled(false);
-    //num de neuronas gaussianas
+    //number of Gaussian neurons
     k=ui->lineK->text().toInt();
     if(k==0){
         k=5;
@@ -324,7 +324,7 @@ void MainWindow::on_bttnInicializar_clicked()
     }
 
     int numinputs=inputs.size();
-    //inicializa neuronas RBF
+    //initialize RBF neurons
     for(int i=1; i<=k; i++)
     {
         int pos=(numinputs/(k+1))*i;
@@ -332,9 +332,9 @@ void MainWindow::on_bttnInicializar_clicked()
         radial_neurons.append(new RadialNeuron(inputs.at(pos)));
         //qDebug()<<"Neurona "<<i<<": "<<inputs.at(pos).at(0)<<"-"<<inputs.at(pos).at(1)<<"\n";
     }
-    //inicializa neurona lineal de salida
+    //initialize output linear neuron
     linear_neuron = LinearNeuron(k);
-    //series para graficar
+    //series for plotting
     QVector<QLineSeries *> seriesAux;
     //recorre las neuronas
     chart_gaussians->removeAllSeries();
@@ -343,7 +343,7 @@ void MainWindow::on_bttnInicializar_clicked()
     for(int i=0;i<k;i++)
     {
         QLineSeries *serieAux = new QLineSeries();
-        //recorre las inputs para graficar
+        //iterate through the inputs for plotting
         for(int j=0;j<numinputs;j++)
         {
             double x=inputs.at(j);
@@ -353,7 +353,7 @@ void MainWindow::on_bttnInicializar_clicked()
         }
         seriesAux.append(serieAux);
     }
-    //grafica lo inicial :v
+    //plot initial curves
     int numSeries=seriesAux.size();
     for(int i=0;i<numSeries;i++)
         chart_gaussians->addSeries(seriesAux.at(i));
@@ -361,11 +361,11 @@ void MainWindow::on_bttnInicializar_clicked()
 }
 void MainWindow::ProcessNewFunction(int option)
 {
-    //limpia variables
+    //clear variables
     Restart();
-    //activa el espacio para mover k
+    //enable k input field
     ui->lineK->setEnabled(true);
-    //crea la nueva gráfica
+    //create a new chart
     QString chart_name="";
     for(double x=-INPUT_RANGE;x<=INPUT_RANGE;x=x+STEP_POINT)
     {
@@ -374,23 +374,23 @@ void MainWindow::ProcessNewFunction(int option)
         switch(option){
         case OP_SIN:
             y=qSin(x);
-            chart_name="Grafica Seno";
+            chart_name="Sine Chart";
             break;
         case OP_COS:
             y=qCos(x);
-            chart_name="Grafica Coseno";
+            chart_name="Cosine Chart";
             break;
         case OP_FUNCTION_3:
             y=((x-2)*(2*x+1))/(1+qPow(x,2));
-            chart_name="Grafica ((x-2)(2x+1))/(1x^2)";
+            chart_name="Chart ((x-2)(2x+1))/(1x^2)";
             break;
         case OP_FUNCTION_4:
             y=2*qSin(x)+qCos(3*x);
-            chart_name="Grafica 2sin(x)+cos(3x)";
+            chart_name="Chart 2sin(x)+cos(3x)";
             break;
         case OP_FUNCTION_5:
             y=qSin(2*x)+qLn(qPow(x,2));
-            chart_name="Grafica sin(2x) + ln(x^2)";
+            chart_name="Chart sin(2x) + ln(x^2)";
             break;
         }
         series->append(x,y);
@@ -399,10 +399,10 @@ void MainWindow::ProcessNewFunction(int option)
         //agregar inputs
         inputs.append(x);
     }
-    gridLayout->removeWidget(chartView);//eliminamos el chartview del layout
-    chart->removeSeries(series);//se remueve la serie para evitar que el destructor del chart la elimine
-    delete chart;//elimina chart aunque con eliminar el chartview tambien se elimina este
-    delete chartView;//elimina chartview
+    gridLayout->removeWidget(chartView); // remove chart view from the layout
+    chart->removeSeries(series); // keep series alive when deleting chart
+    delete chart;
+    delete chartView;
     chart = new QChart();
     chart->legend()->hide();
     chart->addSeries(series);
@@ -413,25 +413,25 @@ void MainWindow::ProcessNewFunction(int option)
     gridLayout->addWidget(chartView,0,0);
     qApp->processEvents();
 }
-void MainWindow::on_rbSeno_clicked()
+void MainWindow::on_rbSine_clicked()
 {
-    if(ui->rbSeno->isChecked())
+    if(ui->rbSine->isChecked())
     {
         ProcessNewFunction(OP_SIN);
     }
 }
 
-void MainWindow::on_rbCoseno_clicked()
+void MainWindow::on_rbCosine_clicked()
 {
-    if(ui->rbCoseno->isChecked())
+    if(ui->rbCosine->isChecked())
     {
         ProcessNewFunction(OP_COS);
     }
 }
 
-void MainWindow::on_rbFuncion3_clicked()
+void MainWindow::on_rbFunction3_clicked()
 {
-    if(ui->rbFuncion3->isChecked())
+    if(ui->rbFunction3->isChecked())
     {
         ProcessNewFunction(OP_FUNCTION_3);
     }
@@ -439,17 +439,17 @@ void MainWindow::on_rbFuncion3_clicked()
 
 
 
-void MainWindow::on_rbFuncion4_clicked()
+void MainWindow::on_rbFunction4_clicked()
 {
-    if(ui->rbFuncion4->isChecked())
+    if(ui->rbFunction4->isChecked())
     {
         ProcessNewFunction(OP_FUNCTION_4);
     }
 }
 
-void MainWindow::on_rbFuncion5_clicked()
+void MainWindow::on_rbFunction5_clicked()
 {
-    if(ui->rbFuncion5->isChecked())
+    if(ui->rbFunction5->isChecked())
     {
         ProcessNewFunction(OP_FUNCTION_5);
     }

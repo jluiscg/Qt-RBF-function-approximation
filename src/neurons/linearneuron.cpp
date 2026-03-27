@@ -14,7 +14,7 @@ LinearNeuron::LinearNeuron()
 LinearNeuron::LinearNeuron(int dimension)
 {
     for(int i=1;i<=dimension;i++){
-        pesos_.append(QRandomGenerator::global()->bounded(5) + (i / 10.0));
+        weights_.append(QRandomGenerator::global()->bounded(5) + (i / 10.0));
     }
     bias_=1;
 }
@@ -22,8 +22,8 @@ LinearNeuron::LinearNeuron(int dimension)
 double LinearNeuron::Output(QVector<double> x){
     double z=0;
     //Wkj*Phi(rj) Summation
-    for(int i=0;i<pesos_.size();i++){
-        z+=pesos_.at(i)*x.at(i);
+    for(int i=0;i<weights_.size();i++){
+        z+=weights_.at(i)*x.at(i);
     }
     z+=bias_;
     return z;

@@ -30,7 +30,7 @@
      <string>η</string>
     </property>
    </widget>
-   <widget class="QLabel" name="lblNumEpocas">
+    <widget class="QLabel" name="lblNumEpochs">
     <property name="geometry">
      <rect>
       <x>780</x>
@@ -43,7 +43,7 @@
      <string notr="true">font: 87 16pt &quot;Arial Black&quot;;</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Num. Epocas&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Num. Epochs&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineLearning">
@@ -56,7 +56,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEpocas">
+    <widget class="QLineEdit" name="lineEpochs">
     <property name="geometry">
      <rect>
       <x>910</x>
@@ -66,7 +66,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="lblNumEpoca">
+    <widget class="QLabel" name="lblCurrentEpoch">
     <property name="geometry">
      <rect>
       <x>950</x>
@@ -79,7 +79,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="bttnEntrenar">
+    <widget class="QPushButton" name="btnTrain">
     <property name="geometry">
      <rect>
       <x>590</x>
@@ -97,7 +97,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Entrenar</string>
+    <string>Train</string>
     </property>
    </widget>
    <widget class="QWidget" name="widget" native="true">
@@ -110,7 +110,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="lblEpocaFinal">
+    <widget class="QLabel" name="lblFinalEpoch">
     <property name="geometry">
      <rect>
       <x>780</x>
@@ -127,10 +127,10 @@
      </font>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Epoca Final&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Final Epoch&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="lblencontrado">
+    <widget class="QLabel" name="lblFound">
     <property name="geometry">
      <rect>
       <x>780</x>
@@ -150,7 +150,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineErrorDeseado">
+    <widget class="QLineEdit" name="lineDesiredError">
     <property name="geometry">
      <rect>
       <x>920</x>
@@ -160,7 +160,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="lblErrorDeseado">
+    <widget class="QLabel" name="lblDesiredError">
     <property name="geometry">
      <rect>
       <x>780</x>
@@ -173,10 +173,10 @@
      <string notr="true">font: 87 16pt &quot;Arial Black&quot;;</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Error Deseado&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Desired Error&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="rbSeno">
+    <widget class="QRadioButton" name="rbSine">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -186,10 +186,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>Seno</string>
+    <string>Sine</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="rbCoseno">
+    <widget class="QRadioButton" name="rbCosine">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -199,10 +199,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>Coseno</string>
+    <string>Cosine</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="rbFuncion3">
+    <widget class="QRadioButton" name="rbFunction3">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -241,7 +241,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="bttnInicializar">
+    <widget class="QPushButton" name="btnInitialize">
     <property name="geometry">
      <rect>
       <x>410</x>
@@ -259,10 +259,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Inicializar</string>
+    <string>Initialize</string>
     </property>
    </widget>
-   <widget class="QWidget" name="widget_gaussianas" native="true">
+    <widget class="QWidget" name="widgetGaussians" native="true">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -282,7 +282,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QRadioButton" name="rbFuncion4">
+    <widget class="QRadioButton" name="rbFunction4">
     <property name="geometry">
      <rect>
       <x>170</x>
@@ -295,7 +295,7 @@
      <string>2sin(x)+cos(3x)</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="rbFuncion5">
+    <widget class="QRadioButton" name="rbFunction5">
     <property name="geometry">
      <rect>
       <x>170</x>

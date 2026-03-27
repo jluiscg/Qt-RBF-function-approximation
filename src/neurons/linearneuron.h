@@ -13,7 +13,7 @@ class LinearNeuron
 public:
     LinearNeuron();
     LinearNeuron(int dimension);
-    QVector<double> pesos_;
+    QVector<double> weights_;
     double bias_;
     double Output(QVector<double> x);
 };
