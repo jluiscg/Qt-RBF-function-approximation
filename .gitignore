@@ -1,0 +1,64 @@
+# Qt / qmake user-local files
+*.pro.user
+*.pro.user.*
+*.pri.user
+*.qbs.user
+
+# qmake generated files
+.qmake.stash
+.qmake.cache
+Makefile
+Makefile.*
+
+# Qt generated sources
+moc_*.cpp
+moc_*.h
+ui_*.h
+qrc_*.cpp
+*.moc
+
+# Build outputs
+*.o
+*.obj
+*.lo
+*.la
+*.a
+*.so
+*.so.*
+*.dylib
+*.dll
+*.lib
+*.exp
+*.pdb
+*.exe
+*.app
+
+# Typical build directories
+build/
+build-*/
+debug/
+release/
+
+# CMake artifacts (if used later)
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+
+# OS artifacts
+.DS_Store
+
+# Editor artifacts
+*.swp
+*.swo
+*~
+
+# Logs / temp
+*.log
+*.tmp
+
+# VS Code local folder
+.vscode/*
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
