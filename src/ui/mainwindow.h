@@ -11,6 +11,9 @@
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QScatterSeries>
+#include <QtCharts/QChart>
+
+QT_USE_NAMESPACE
 #include <QGridLayout>
 #include <QGraphicsScene>
 #include <QVector>
@@ -24,7 +27,6 @@
 #include "radialneuron.h"
 #include "linearneuron.h"
 
-using namespace QtCharts;
 namespace Ui {
 class MainWindow;
 }

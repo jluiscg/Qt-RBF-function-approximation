@@ -5,6 +5,7 @@
  *Date: November 23, 2017
 */
 #include "linearneuron.h"
+#include <QRandomGenerator>
 
 LinearNeuron::LinearNeuron()
 {
@@ -13,7 +14,7 @@ LinearNeuron::LinearNeuron()
 LinearNeuron::LinearNeuron(int dimension)
 {
     for(int i=1;i<=dimension;i++){
-        pesos_.append((qrand()%5)+(i/10));
+        pesos_.append(QRandomGenerator::global()->bounded(5) + (i / 10.0));
     }
     bias_=1;
 }

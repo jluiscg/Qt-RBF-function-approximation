@@ -7,7 +7,7 @@
 #ifndef RADIALNEURON_H
 #define RADIALNEURON_H
 
-#include <QtCore/qmath.h>
+#include <QtMath>
 
 class RadialNeuron
 {

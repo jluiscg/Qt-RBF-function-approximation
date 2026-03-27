@@ -19,8 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    qsrand(time(NULL));
     //functions
     series = new QLineSeries();
     chart = new QChart();
@@ -387,11 +385,11 @@ void MainWindow::ProcessNewFunction(int option)
             chart_name="Grafica ((x-2)(2x+1))/(1x^2)";
             break;
         case OP_FUNCTION_4:
-            y=2*sin(x)+cos(3*x);
+            y=2*qSin(x)+qCos(3*x);
             chart_name="Grafica 2sin(x)+cos(3x)";
             break;
         case OP_FUNCTION_5:
-            y=sin(2*x)+qLn(qPow(x,2));
+            y=qSin(2*x)+qLn(qPow(x,2));
             chart_name="Grafica sin(2x) + ln(x^2)";
             break;
         }
